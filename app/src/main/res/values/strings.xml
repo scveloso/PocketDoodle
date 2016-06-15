@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">PocketDoodle</string>
+    <string name="color_palette">
+        Color Palette
+    </string>
+    <string name="current_color">
+        Current Color:
+    </string>
+</resources>
