@@ -19,13 +19,8 @@ public class PocketDoodleManager {
     private String mMode;           // whether user is sketching, making lines, making boxes, etc.
 
     private Line mCurrentLine;
-    private List<Line> mLines = new ArrayList<>();
-
     private Box mCurrentBox;
-    private List<Box> mBoxes = new ArrayList<>();
-
     private Eraser mCurrentEraser;
-    private List<Eraser> mErasers = new ArrayList<>();
 
     private List<Shape> mShapes = new ArrayList<>();
 
@@ -76,15 +71,9 @@ public class PocketDoodleManager {
         mCurrentLine = currentLine;
     }
 
-    public List<Line> getLines() {
-        return mLines;
-    }
-
     public void addLine(Line l) {
-        mLines.add(l);
+        mShapes.add(l);
     }
-
-
 
     public Box getCurrentBox() {
         return mCurrentBox;
@@ -94,27 +83,19 @@ public class PocketDoodleManager {
         mCurrentBox = currentBox;
     }
 
-    public List<Box> getBoxes() {
-        return mBoxes;
-    }
-
     public void addBox(Box b) {
-        mBoxes.add(b);
-    }
-
-    public Eraser getCurrentEraser() {
-        return mCurrentEraser;
+        mShapes.add(b);
     }
 
     public void setCurrentEraser(Eraser currentEraser) {
         mCurrentEraser = currentEraser;
     }
 
-    public List<Eraser> getErasers() {
-        return mErasers;
+    public void addEraser(Eraser e) {
+        mShapes.add(e);
     }
 
-    public void addEraser(Eraser e) {
-        mErasers.add(e);
+    public List<Shape> getShapes() {
+        return mShapes;
     }
 }

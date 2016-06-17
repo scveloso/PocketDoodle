@@ -143,7 +143,7 @@ public class ColorPaletteFragment extends Fragment {
         });
 
         mBrownButton = (ImageButton) v.findViewById(R.id.color_brown);
-        mVioletButton.setOnClickListener(new View.OnClickListener() {
+        mBrownButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mCurrentColorInt = ContextCompat.getColor(getActivity(), R.color.colorBrown);
@@ -152,7 +152,7 @@ public class ColorPaletteFragment extends Fragment {
         });
 
         mGrayButton = (ImageButton) v.findViewById(R.id.color_gray);
-        mVioletButton.setOnClickListener(new View.OnClickListener() {
+        mGrayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mCurrentColorInt = ContextCompat.getColor(getActivity(), R.color.colorGray);
@@ -161,7 +161,7 @@ public class ColorPaletteFragment extends Fragment {
         });
 
         mCyanButton = (ImageButton) v.findViewById(R.id.color_cyan);
-        mVioletButton.setOnClickListener(new View.OnClickListener() {
+        mCyanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mCurrentColorInt = ContextCompat.getColor(getActivity(), R.color.colorCyan);

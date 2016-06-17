@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class DrawingView extends View {
 
-    private PocketDoodleManager mPocketDoodleManager;
+    private PocketDoodleManager sPocketDoodleManager;
 
     public DrawingView (Context context) {
         this(context, null);
@@ -29,32 +29,30 @@ public class DrawingView extends View {
     public DrawingView (Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        mPocketDoodleManager = PocketDoodleManager.get(context);
+        sPocketDoodleManager = PocketDoodleManager.get(context);
 
-        if (mPocketDoodleManager.getPaint() == null) {
+        if (sPocketDoodleManager.getPaint() == null) {
             Paint paint = new Paint();
             int startingColor = ContextCompat.getColor(context, R.color.colorBlack);
             paint.setColor(startingColor);
-            mPocketDoodleManager.setPaint(paint);
+            sPocketDoodleManager.setPaint(paint);
         }
 
         Paint backgroundPaint = new Paint();
         backgroundPaint.setColor(0xfff8efe0);
-        mPocketDoodleManager.setBackgroundPaint(backgroundPaint);
+        sPocketDoodleManager.setBackgroundPaint(backgroundPaint);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawPaint(mPocketDoodleManager.getBackgroundPaint());
+        canvas.drawPaint(sPocketDoodleManager.getBackgroundPaint());
 
-        drawLines(canvas);
-        drawBoxes(canvas);
-        drawErasers(canvas);
+        drawShapes(canvas);
     }
 
     @Override
     public boolean onTouchEvent (MotionEvent event) {
-        String mode = mPocketDoodleManager.getMode();
+        String mode = sPocketDoodleManager.getMode();
         switch (mode) {
             case "Line":
                 handleLineEvent(event);
@@ -77,16 +75,16 @@ public class DrawingView extends View {
         switch(event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 Line currentLine = new Line(originPoint);
-                currentLine.setColor(mPocketDoodleManager.getPaint());
-                mPocketDoodleManager.setCurrentLine(currentLine);
-                mPocketDoodleManager.addLine(currentLine);
+                currentLine.setColor(sPocketDoodleManager.getPaint());
+                sPocketDoodleManager.setCurrentLine(currentLine);
+                sPocketDoodleManager.addLine(currentLine);
                 break;
             case MotionEvent.ACTION_UP:
-                mPocketDoodleManager.setCurrentLine(null);
+                sPocketDoodleManager.setCurrentLine(null);
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (mPocketDoodleManager.getCurrentLine() != null) {
-                    mPocketDoodleManager.getCurrentLine().addPoint(originPoint);
+                if (sPocketDoodleManager.getCurrentLine() != null) {
+                    sPocketDoodleManager.getCurrentLine().addPoint(originPoint);
                     // Makes DrawingView invalid,
                     // causing it to redraw itself
                     // and its children - calling onDraw
@@ -94,7 +92,7 @@ public class DrawingView extends View {
                 }
                 break;
             case MotionEvent.ACTION_CANCEL:
-                mPocketDoodleManager.setCurrentLine(null);
+                sPocketDoodleManager.setCurrentLine(null);
                 break;
         }
     }
@@ -105,27 +103,24 @@ public class DrawingView extends View {
         switch(event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 Box currentBox = new Box(originPoint);
-                currentBox.setColor(mPocketDoodleManager.getPaint());
-                mPocketDoodleManager.setCurrentBox(currentBox);
-                mPocketDoodleManager.addBox(currentBox);
-                System.out.println("Origin at " + originPoint.x + " , " + originPoint.y);
+                currentBox.setColor(sPocketDoodleManager.getPaint());
+                sPocketDoodleManager.setCurrentBox(currentBox);
+                sPocketDoodleManager.addBox(currentBox);
                 break;
             case MotionEvent.ACTION_UP:
-                mPocketDoodleManager.setCurrentBox(null);
-                System.out.println("Finished a box");
+                sPocketDoodleManager.setCurrentBox(null);
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (mPocketDoodleManager.getCurrentBox() != null) {
-                    mPocketDoodleManager.getCurrentBox().setCurrent(originPoint);
+                if (sPocketDoodleManager.getCurrentBox() != null) {
+                    sPocketDoodleManager.getCurrentBox().setCurrent(originPoint);
                     // Makes DrawingView invalid,
                     // causing it to redraw itself
                     // and its children - calling onDraw
-                    System.out.println("Current at " + originPoint.x + " , " + originPoint.y);
                     invalidate();
                 }
                 break;
             case MotionEvent.ACTION_CANCEL:
-                mPocketDoodleManager.setCurrentBox(null);
+                sPocketDoodleManager.setCurrentBox(null);
                 break;
         }
     }
@@ -136,67 +131,69 @@ public class DrawingView extends View {
         switch(event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 Eraser currentEraser = new Eraser(originPoint);
-                mPocketDoodleManager.setCurrentEraser(currentEraser);
-                mPocketDoodleManager.addEraser(currentEraser);
+                sPocketDoodleManager.setCurrentEraser(currentEraser);
+                sPocketDoodleManager.addEraser(currentEraser);
                 break;
             case MotionEvent.ACTION_UP:
-                mPocketDoodleManager.setCurrentEraser(null);
+                sPocketDoodleManager.setCurrentEraser(null);
                 break;
             case MotionEvent.ACTION_MOVE:
                 Eraser moveEraser = new Eraser(originPoint);
-                mPocketDoodleManager.setCurrentEraser(moveEraser);
-                mPocketDoodleManager.addEraser(moveEraser);
+                sPocketDoodleManager.setCurrentEraser(moveEraser);
+                sPocketDoodleManager.addEraser(moveEraser);
                 invalidate();
                 break;
             case MotionEvent.ACTION_CANCEL:
-                mPocketDoodleManager.setCurrentEraser(null);
+                sPocketDoodleManager.setCurrentEraser(null);
                 break;
         }
     }
 
-    private void drawLines(Canvas canvas) {
-        // Go through all made lines
-        for (Line currentLine : mPocketDoodleManager.getLines()) {
-            // Get each lines' points
-            List<PointF> currentLinePoints = currentLine.getPoints();
-            // Initialize origin point of each line
-            PointF previousPoint = currentLinePoints.get(0);
-            // Make a line from point 1 to point 2, point 2 to point 3, and so on...
-            for (int i = 0; i < currentLinePoints.size(); i++) {
-                if (i != 0) {
-                    PointF currentPoint = currentLinePoints.get(i);
-                    canvas.drawLine(previousPoint.x, previousPoint.y,
-                                    currentPoint.x, currentPoint.y, currentLine.getColor());
-                    previousPoint = currentPoint;
-                }
+    private void drawShapes(Canvas canvas) {
+        for (Shape s : sPocketDoodleManager.getShapes()) {
+            if (s instanceof Line) {
+                drawLine((Line) s, canvas);
+            } else if (s instanceof Box) {
+                drawBox ((Box) s, canvas);
+            } else if (s instanceof Eraser) {
+                drawEraser((Eraser) s, canvas);
             }
         }
     }
 
-    private void drawBoxes(Canvas canvas) {
-        // Go through all made boxes and draw them
-        for (Box currentBox : mPocketDoodleManager.getBoxes()) {
-            float left = Math.min(currentBox.getOrigin().x, currentBox.getCurrent().x);
-            float right = Math.max(currentBox.getOrigin().x, currentBox.getCurrent().x);
-            float top = Math.min(currentBox.getOrigin().y, currentBox.getCurrent().y);
-            float bottom = Math.max(currentBox.getOrigin().y, currentBox.getCurrent().y);
-
-            canvas.drawRect(left, top, right, bottom,
-                            currentBox.getColor());
+    private void drawLine(Line l, Canvas canvas) {
+        List<PointF> currentLinePoints = l.getPoints();
+        // Initialize origin point of each line
+        PointF previousPoint = currentLinePoints.get(0);
+        // Make a line from point 1 to point 2, point 2 to point 3, and so on...
+        for (int i = 0; i < currentLinePoints.size(); i++) {
+            if (i != 0) {
+                PointF currentPoint = currentLinePoints.get(i);
+                canvas.drawLine(previousPoint.x, previousPoint.y,
+                        currentPoint.x, currentPoint.y, l.getColor());
+                previousPoint = currentPoint;
+            }
         }
     }
 
-    private void drawErasers(Canvas canvas) {
-        // Go through all made boxes and draw them
-        for (Eraser currentEraser : mPocketDoodleManager.getErasers()) {
-            float left = Math.min(currentEraser.getOrigin().x, currentEraser.getCurrent().x);
-            float right = Math.max(currentEraser.getOrigin().x, currentEraser.getCurrent().x);
-            float top = Math.min(currentEraser.getOrigin().y, currentEraser.getCurrent().y);
-            float bottom = Math.max(currentEraser.getOrigin().y, currentEraser.getCurrent().y);
+    private void drawBox(Box currentBox, Canvas canvas) {
+        float left = Math.min(currentBox.getOrigin().x, currentBox.getCurrent().x);
+        float right = Math.max(currentBox.getOrigin().x, currentBox.getCurrent().x);
+        float top = Math.min(currentBox.getOrigin().y, currentBox.getCurrent().y);
+        float bottom = Math.max(currentBox.getOrigin().y, currentBox.getCurrent().y);
 
-            canvas.drawRect(left, top, right, bottom,
-                    mPocketDoodleManager.getBackgroundPaint());
-        }
+        canvas.drawRect(left, top, right, bottom,
+                currentBox.getColor());
+    }
+
+    private void drawEraser(Eraser currentEraser, Canvas canvas) {
+        float left = Math.min(currentEraser.getOrigin().x, currentEraser.getCurrent().x);
+        float right = Math.max(currentEraser.getOrigin().x, currentEraser.getCurrent().x);
+        float top = Math.min(currentEraser.getOrigin().y, currentEraser.getCurrent().y);
+        float bottom = Math.max(currentEraser.getOrigin().y, currentEraser.getCurrent().y);
+
+        canvas.drawRect(left, top, right, bottom,
+                sPocketDoodleManager.getBackgroundPaint());
     }
 
     public void saveDoodle(){
