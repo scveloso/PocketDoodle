@@ -6,12 +6,11 @@ import android.graphics.PointF;
 /**
  * Created by Veloso on 6/16/2016.
  */
-public class Box {
+public class Box extends Shape{
 
     private PointF mOrigin;
     private PointF mCurrent;
     private Paint mColor;
-
 
     public Box (PointF origin) {
         mOrigin = origin;

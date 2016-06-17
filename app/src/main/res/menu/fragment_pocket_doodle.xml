@@ -25,4 +25,10 @@
         android:icon="@drawable/ic_box_mode"
         android:title="Box Mode"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_item_eraser_mode"
+        android:icon="@drawable/ic_eraser_mode"
+        android:title="Eraser Mode"
+        app:showAsAction="ifRoom" />
 </menu>

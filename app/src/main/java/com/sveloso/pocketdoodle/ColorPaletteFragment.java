@@ -33,6 +33,11 @@ public class ColorPaletteFragment extends Fragment {
     private ImageButton mIndigoButton;
     private ImageButton mVioletButton;
 
+    private ImageButton mWhiteButton;
+    private ImageButton mBrownButton;
+    private ImageButton mGrayButton;
+    private ImageButton mCyanButton;
+
     public static ColorPaletteFragment newInstance(int colorInt) {
         Bundle args = new Bundle();
         args.putInt(ARG_COLOR_INT, colorInt);
@@ -127,6 +132,45 @@ public class ColorPaletteFragment extends Fragment {
                 updateCurrentColor();
             }
         });
+
+        mWhiteButton = (ImageButton) v.findViewById(R.id.color_white);
+        mWhiteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCurrentColorInt = ContextCompat.getColor(getActivity(), R.color.colorWhite);
+                updateCurrentColor();
+            }
+        });
+
+        mBrownButton = (ImageButton) v.findViewById(R.id.color_brown);
+        mVioletButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCurrentColorInt = ContextCompat.getColor(getActivity(), R.color.colorBrown);
+                updateCurrentColor();
+            }
+        });
+
+        mGrayButton = (ImageButton) v.findViewById(R.id.color_gray);
+        mVioletButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCurrentColorInt = ContextCompat.getColor(getActivity(), R.color.colorGray);
+                updateCurrentColor();
+            }
+        });
+
+        mCyanButton = (ImageButton) v.findViewById(R.id.color_cyan);
+        mVioletButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCurrentColorInt = ContextCompat.getColor(getActivity(), R.color.colorCyan);
+                updateCurrentColor();
+            }
+        });
+
+
+
 
         return v;
     }

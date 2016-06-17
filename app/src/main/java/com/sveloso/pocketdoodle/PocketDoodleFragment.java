@@ -52,8 +52,8 @@ public class PocketDoodleFragment extends Fragment {
             case R.id.menu_item_color_palette:
                 Paint currentPaint = sPocketDoodleManager.getPaint();
                 int currentColor = currentPaint.getColor();
-                Intent intent = ColorPaletteActivity.newIntent(getActivity(), currentColor);
-                startActivity(intent);
+                Intent colorIntent = ColorPaletteActivity.newIntent(getActivity(), currentColor);
+                startActivity(colorIntent);
                 return true;
             case R.id.menu_item_save_doodle:
                 mDrawingView.saveDoodle();
@@ -63,6 +63,9 @@ public class PocketDoodleFragment extends Fragment {
                 return true;
             case R.id.menu_item_line_mode:
                 sPocketDoodleManager.setMode("Line");
+                return true;
+            case R.id.menu_item_eraser_mode:
+                sPocketDoodleManager.setMode("Eraser");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

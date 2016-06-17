@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by Veloso on 6/15/2016.
  */
-public class Line {
+public class Line extends Shape{
 
     private List<PointF> mPoints;
     private Paint mColor;

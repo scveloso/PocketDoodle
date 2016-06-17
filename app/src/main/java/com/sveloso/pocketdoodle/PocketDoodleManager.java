@@ -24,6 +24,11 @@ public class PocketDoodleManager {
     private Box mCurrentBox;
     private List<Box> mBoxes = new ArrayList<>();
 
+    private Eraser mCurrentEraser;
+    private List<Eraser> mErasers = new ArrayList<>();
+
+    private List<Shape> mShapes = new ArrayList<>();
+
     public static PocketDoodleManager get(Context context) {
         if (sPocketDoodleManager == null) {
             sPocketDoodleManager = new PocketDoodleManager(context);
@@ -79,6 +84,8 @@ public class PocketDoodleManager {
         mLines.add(l);
     }
 
+
+
     public Box getCurrentBox() {
         return mCurrentBox;
     }
@@ -93,5 +100,21 @@ public class PocketDoodleManager {
 
     public void addBox(Box b) {
         mBoxes.add(b);
+    }
+
+    public Eraser getCurrentEraser() {
+        return mCurrentEraser;
+    }
+
+    public void setCurrentEraser(Eraser currentEraser) {
+        mCurrentEraser = currentEraser;
+    }
+
+    public List<Eraser> getErasers() {
+        return mErasers;
+    }
+
+    public void addEraser(Eraser e) {
+        mErasers.add(e);
     }
 }

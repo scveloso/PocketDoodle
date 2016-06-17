@@ -9,4 +9,10 @@
     <string name="save_doodle">
         Save Doodle
     </string>
+    <string name="save_doodle_text_view">
+        Save as:
+    </string>
+    <string name="save_doodle_hint">
+        Enter a title for your doodle.
+    </string>
 </resources>

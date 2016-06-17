@@ -10,7 +10,6 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -50,6 +49,7 @@ public class DrawingView extends View {
 
         drawLines(canvas);
         drawBoxes(canvas);
+        drawErasers(canvas);
     }
 
     @Override
@@ -61,6 +61,9 @@ public class DrawingView extends View {
                 break;
             case "Box":
                 handleBoxEvent(event);
+                break;
+            case "Eraser":
+                handleEraserEvent(event);
                 break;
             default:
                 super.onTouchEvent(event);
@@ -105,7 +108,7 @@ public class DrawingView extends View {
                 currentBox.setColor(mPocketDoodleManager.getPaint());
                 mPocketDoodleManager.setCurrentBox(currentBox);
                 mPocketDoodleManager.addBox(currentBox);
-                System.out.println("Added a box");
+                System.out.println("Origin at " + originPoint.x + " , " + originPoint.y);
                 break;
             case MotionEvent.ACTION_UP:
                 mPocketDoodleManager.setCurrentBox(null);
@@ -117,12 +120,36 @@ public class DrawingView extends View {
                     // Makes DrawingView invalid,
                     // causing it to redraw itself
                     // and its children - calling onDraw
-                    System.out.println("Set a new current for box");
+                    System.out.println("Current at " + originPoint.x + " , " + originPoint.y);
                     invalidate();
                 }
                 break;
             case MotionEvent.ACTION_CANCEL:
                 mPocketDoodleManager.setCurrentBox(null);
+                break;
+        }
+    }
+
+    private void handleEraserEvent (MotionEvent event) {
+        PointF originPoint = new PointF(event.getX(), event.getY());
+
+        switch(event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                Eraser currentEraser = new Eraser(originPoint);
+                mPocketDoodleManager.setCurrentEraser(currentEraser);
+                mPocketDoodleManager.addEraser(currentEraser);
+                break;
+            case MotionEvent.ACTION_UP:
+                mPocketDoodleManager.setCurrentEraser(null);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                Eraser moveEraser = new Eraser(originPoint);
+                mPocketDoodleManager.setCurrentEraser(moveEraser);
+                mPocketDoodleManager.addEraser(moveEraser);
+                invalidate();
+                break;
+            case MotionEvent.ACTION_CANCEL:
+                mPocketDoodleManager.setCurrentEraser(null);
                 break;
         }
     }
@@ -156,7 +183,19 @@ public class DrawingView extends View {
 
             canvas.drawRect(left, top, right, bottom,
                             currentBox.getColor());
-            System.out.println("Finished drawing a box");
+        }
+    }
+
+    private void drawErasers(Canvas canvas) {
+        // Go through all made boxes and draw them
+        for (Eraser currentEraser : mPocketDoodleManager.getErasers()) {
+            float left = Math.min(currentEraser.getOrigin().x, currentEraser.getCurrent().x);
+            float right = Math.max(currentEraser.getOrigin().x, currentEraser.getCurrent().x);
+            float top = Math.min(currentEraser.getOrigin().y, currentEraser.getCurrent().y);
+            float bottom = Math.max(currentEraser.getOrigin().y, currentEraser.getCurrent().y);
+
+            canvas.drawRect(left, top, right, bottom,
+                    mPocketDoodleManager.getBackgroundPaint());
         }
     }
 
@@ -176,7 +215,7 @@ public class DrawingView extends View {
             // Place bitmap into the file
             FileOutputStream ostream = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.PNG, 10, ostream);
-
+            System.out.println("Saved pic!");
             ostream.close();
         }
         catch (Exception e) {

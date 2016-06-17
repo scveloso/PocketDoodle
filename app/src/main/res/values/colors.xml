@@ -35,4 +35,21 @@
     <color name="colorViolet">
         #EE82EE
     </color>
+
+
+    <color name="colorWhite">
+        #FFFFFF
+    </color>
+
+    <color name="colorBrown">
+        #A52A2A
+    </color>
+
+    <color name="colorGray">
+        #808080
+    </color>
+
+    <color name="colorCyan">
+        #00FFFF
+    </color>
 </resources>
