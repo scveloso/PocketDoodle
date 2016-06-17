@@ -1,15 +1,19 @@
 package com.sveloso.pocketdoodle;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.os.Environment;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 
 /**
@@ -45,6 +49,7 @@ public class DrawingView extends View {
         canvas.drawPaint(mPocketDoodleManager.getBackgroundPaint());
 
         drawLines(canvas);
+        drawBoxes(canvas);
     }
 
     @Override
@@ -53,6 +58,9 @@ public class DrawingView extends View {
         switch (mode) {
             case "Line":
                 handleLineEvent(event);
+                break;
+            case "Box":
+                handleBoxEvent(event);
                 break;
             default:
                 super.onTouchEvent(event);
@@ -88,6 +96,37 @@ public class DrawingView extends View {
         }
     }
 
+    private void handleBoxEvent(MotionEvent event) {
+        PointF originPoint = new PointF(event.getX(), event.getY());
+
+        switch(event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                Box currentBox = new Box(originPoint);
+                currentBox.setColor(mPocketDoodleManager.getPaint());
+                mPocketDoodleManager.setCurrentBox(currentBox);
+                mPocketDoodleManager.addBox(currentBox);
+                System.out.println("Added a box");
+                break;
+            case MotionEvent.ACTION_UP:
+                mPocketDoodleManager.setCurrentBox(null);
+                System.out.println("Finished a box");
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (mPocketDoodleManager.getCurrentBox() != null) {
+                    mPocketDoodleManager.getCurrentBox().setCurrent(originPoint);
+                    // Makes DrawingView invalid,
+                    // causing it to redraw itself
+                    // and its children - calling onDraw
+                    System.out.println("Set a new current for box");
+                    invalidate();
+                }
+                break;
+            case MotionEvent.ACTION_CANCEL:
+                mPocketDoodleManager.setCurrentBox(null);
+                break;
+        }
+    }
+
     private void drawLines(Canvas canvas) {
         // Go through all made lines
         for (Line currentLine : mPocketDoodleManager.getLines()) {
@@ -104,6 +143,44 @@ public class DrawingView extends View {
                     previousPoint = currentPoint;
                 }
             }
+        }
+    }
+
+    private void drawBoxes(Canvas canvas) {
+        // Go through all made boxes and draw them
+        for (Box currentBox : mPocketDoodleManager.getBoxes()) {
+            float left = Math.min(currentBox.getOrigin().x, currentBox.getCurrent().x);
+            float right = Math.max(currentBox.getOrigin().x, currentBox.getCurrent().x);
+            float top = Math.min(currentBox.getOrigin().y, currentBox.getCurrent().y);
+            float bottom = Math.max(currentBox.getOrigin().y, currentBox.getCurrent().y);
+
+            canvas.drawRect(left, top, right, bottom,
+                            currentBox.getColor());
+            System.out.println("Finished drawing a box");
+        }
+    }
+
+    public void saveDoodle(){
+        // Make this into a bitmap
+        Bitmap bitmap = this.getDrawingCache();
+        // Get the path to android storage
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath();
+        // Make a new file
+        File file = new File(path+File.separator+"name"+".png");
+        try {
+            // If the file doesn't exist
+            if(!file.exists()) {
+                // Make a new file
+                file.createNewFile();
+            }
+            // Place bitmap into the file
+            FileOutputStream ostream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 10, ostream);
+
+            ostream.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

@@ -21,6 +21,9 @@ public class PocketDoodleManager {
     private Line mCurrentLine;
     private List<Line> mLines = new ArrayList<>();
 
+    private Box mCurrentBox;
+    private List<Box> mBoxes = new ArrayList<>();
+
     public static PocketDoodleManager get(Context context) {
         if (sPocketDoodleManager == null) {
             sPocketDoodleManager = new PocketDoodleManager(context);
@@ -30,7 +33,8 @@ public class PocketDoodleManager {
 
     private PocketDoodleManager (Context context) {
         mContext = context.getApplicationContext();
-        mMode = "Line";
+        // Default mode is line
+        mMode = "Box";
     }
 
     public Paint getPaint() {
@@ -57,6 +61,8 @@ public class PocketDoodleManager {
         mMode = mode;
     }
 
+
+
     public Line getCurrentLine() {
         return mCurrentLine;
     }
@@ -71,5 +77,21 @@ public class PocketDoodleManager {
 
     public void addLine(Line l) {
         mLines.add(l);
+    }
+
+    public Box getCurrentBox() {
+        return mCurrentBox;
+    }
+
+    public void setCurrentBox(Box currentBox) {
+        mCurrentBox = currentBox;
+    }
+
+    public List<Box> getBoxes() {
+        return mBoxes;
+    }
+
+    public void addBox(Box b) {
+        mBoxes.add(b);
     }
 }

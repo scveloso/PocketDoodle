@@ -12,7 +12,7 @@ import java.util.List;
 public class Line {
 
     private List<PointF> mPoints;
-    private Paint color;
+    private Paint mColor;
 
     public Line(PointF origin) {
         mPoints = new ArrayList<>();
@@ -28,10 +28,10 @@ public class Line {
     }
 
     public Paint getColor() {
-        return color;
+        return mColor;
     }
 
     public void setColor(Paint color) {
-        this.color = color;
+        this.mColor = color;
     }
 }

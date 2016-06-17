@@ -23,4 +23,16 @@
     <color name="colorBlack">
         #000000
     </color>
+
+    <color name="colorOrange">
+        #FFA500
+    </color>
+
+    <color name="colorIndigo">
+        #4B0082
+    </color>
+
+    <color name="colorViolet">
+        #EE82EE
+    </color>
 </resources>

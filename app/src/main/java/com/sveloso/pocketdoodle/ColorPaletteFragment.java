@@ -29,6 +29,10 @@ public class ColorPaletteFragment extends Fragment {
     private ImageButton mBlackButton;
     private ImageButton mYellowButton;
 
+    private ImageButton mOrangeButton;
+    private ImageButton mIndigoButton;
+    private ImageButton mVioletButton;
+
     public static ColorPaletteFragment newInstance(int colorInt) {
         Bundle args = new Bundle();
         args.putInt(ARG_COLOR_INT, colorInt);
@@ -93,6 +97,33 @@ public class ColorPaletteFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 mCurrentColorInt = ContextCompat.getColor(getActivity(), R.color.colorYellow);
+                updateCurrentColor();
+            }
+        });
+
+        mOrangeButton = (ImageButton) v.findViewById(R.id.color_orange);
+        mOrangeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCurrentColorInt = ContextCompat.getColor(getActivity(), R.color.colorOrange);
+                updateCurrentColor();
+            }
+        });
+
+        mIndigoButton = (ImageButton) v.findViewById(R.id.color_indigo);
+        mIndigoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCurrentColorInt = ContextCompat.getColor(getActivity(), R.color.colorIndigo);
+                updateCurrentColor();
+            }
+        });
+
+        mVioletButton = (ImageButton) v.findViewById(R.id.color_violet);
+        mVioletButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCurrentColorInt = ContextCompat.getColor(getActivity(), R.color.colorViolet);
                 updateCurrentColor();
             }
         });

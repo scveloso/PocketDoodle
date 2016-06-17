@@ -6,4 +6,7 @@
     <string name="current_color">
         Current Color:
     </string>
+    <string name="save_doodle">
+        Save Doodle
+    </string>
 </resources>

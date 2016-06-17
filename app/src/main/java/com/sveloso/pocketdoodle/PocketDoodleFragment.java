@@ -28,6 +28,7 @@ public class PocketDoodleFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_pocket_doodle, container, false);
 
         mDrawingView = (DrawingView) v.findViewById(R.id.pocket_doodle_drawing_view);
+        mDrawingView.setDrawingCacheEnabled(true);
 
         return v;
     }
@@ -53,6 +54,15 @@ public class PocketDoodleFragment extends Fragment {
                 int currentColor = currentPaint.getColor();
                 Intent intent = ColorPaletteActivity.newIntent(getActivity(), currentColor);
                 startActivity(intent);
+                return true;
+            case R.id.menu_item_save_doodle:
+                mDrawingView.saveDoodle();
+                return true;
+            case R.id.menu_item_box_mode:
+                sPocketDoodleManager.setMode("Box");
+                return true;
+            case R.id.menu_item_line_mode:
+                sPocketDoodleManager.setMode("Line");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

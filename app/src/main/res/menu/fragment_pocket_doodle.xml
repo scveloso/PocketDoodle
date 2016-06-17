@@ -8,4 +8,21 @@
         android:title="@string/color_palette"
         app:showAsAction="ifRoom|withText" />
 
+    <item
+        android:id="@+id/menu_item_save_doodle"
+        android:icon="@drawable/ic_save_doodle"
+        android:title="@string/save_doodle"
+        app:showAsAction="ifRoom|withText" />
+
+    <item
+        android:id="@+id/menu_item_line_mode"
+        android:icon="@drawable/ic_line_mode"
+        android:title="Line Mode"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_item_box_mode"
+        android:icon="@drawable/ic_box_mode"
+        android:title="Box Mode"
+        app:showAsAction="ifRoom" />
 </menu>
