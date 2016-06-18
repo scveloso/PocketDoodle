@@ -38,6 +38,11 @@ public class ColorPaletteFragment extends Fragment {
     private ImageButton mGrayButton;
     private ImageButton mCyanButton;
 
+    private ImageButton mSpringGreenButton;
+    private ImageButton mSalmonButton;
+    private ImageButton mOliveButton;
+    private ImageButton mKhakiButton;
+
     public static ColorPaletteFragment newInstance(int colorInt) {
         Bundle args = new Bundle();
         args.putInt(ARG_COLOR_INT, colorInt);
@@ -169,8 +174,40 @@ public class ColorPaletteFragment extends Fragment {
             }
         });
 
+        mSpringGreenButton = (ImageButton) v.findViewById(R.id.color_springgreen);
+        mSpringGreenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCurrentColorInt = ContextCompat.getColor(getActivity(), R.color.colorSpringGreen);
+                updateCurrentColor();
+            }
+        });
 
 
+        mSalmonButton = (ImageButton) v.findViewById(R.id.color_salmon);
+        mSalmonButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCurrentColorInt = ContextCompat.getColor(getActivity(), R.color.colorSalmon);
+                updateCurrentColor();
+            }
+        });
+        mOliveButton = (ImageButton) v.findViewById(R.id.color_olive);
+        mOliveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCurrentColorInt = ContextCompat.getColor(getActivity(), R.color.colorOlive);
+                updateCurrentColor();
+            }
+        });
+        mKhakiButton = (ImageButton) v.findViewById(R.id.color_khaki);
+        mKhakiButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCurrentColorInt = ContextCompat.getColor(getActivity(), R.color.colorKhaki);
+                updateCurrentColor();
+            }
+        });
 
         return v;
     }

@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -196,13 +197,13 @@ public class DrawingView extends View {
                 sPocketDoodleManager.getBackgroundPaint());
     }
 
-    public void saveDoodle(){
+    public boolean saveDoodle(String name){
         // Make this into a bitmap
         Bitmap bitmap = this.getDrawingCache();
         // Get the path to android storage
         String path = Environment.getExternalStorageDirectory().getAbsolutePath();
         // Make a new file
-        File file = new File(path+File.separator+"name"+".png");
+        File file = new File(path + File.separator + name + ".png");
         try {
             // If the file doesn't exist
             if(!file.exists()) {
@@ -212,11 +213,11 @@ public class DrawingView extends View {
             // Place bitmap into the file
             FileOutputStream ostream = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.PNG, 10, ostream);
-            System.out.println("Saved pic!");
             ostream.close();
+            return true;
         }
         catch (Exception e) {
-            e.printStackTrace();
+            return false;
         }
     }
 }

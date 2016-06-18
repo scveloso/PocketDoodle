@@ -52,4 +52,20 @@
     <color name="colorCyan">
         #00FFFF
     </color>
+
+    <color name="colorSpringGreen">
+        #00FF7F
+    </color>
+
+    <color name="colorSalmon">
+        #FA8072
+    </color>
+
+    <color name="colorOlive">
+        #808000
+    </color>
+
+    <color name="colorKhaki">
+        #F0E68C
+    </color>
 </resources>
