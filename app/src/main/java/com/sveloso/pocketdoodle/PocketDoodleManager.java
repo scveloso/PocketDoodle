@@ -34,7 +34,7 @@ public class PocketDoodleManager {
     private PocketDoodleManager (Context context) {
         mContext = context.getApplicationContext();
         // Default mode is line
-        mMode = "Box";
+        mMode = "Line";
     }
 
     public Paint getPaint() {
