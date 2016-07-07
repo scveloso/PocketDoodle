@@ -16,13 +16,10 @@ import java.util.UUID;
 public class ColorPaletteActivity extends SingleFragmentActivity{
 
     private static final String EXTRA_COLOR_INT = "com.sveloso.pocketdoodle.color_int";
-    private int mCurrentColorInt;
 
     @Override
     protected Fragment createFragment() {
         int currentColor = getIntent().getIntExtra(EXTRA_COLOR_INT, -1);
-
-        mCurrentColorInt = currentColor;
 
         return ColorPaletteFragment.newInstance(currentColor);
     }
